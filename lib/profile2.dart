@@ -4,16 +4,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
+class NewProfile extends StatefulWidget {
   final Map<String, dynamic> user;
-  const Profile({super.key, required this.user});
+  const NewProfile({super.key, required this.user});
 
   @override
-  State<Profile> createState() => _ProfileState(user: user);
+  State<NewProfile> createState() => _NewProfileState(user: user);
 }
 
-class _ProfileState extends State<Profile> {
-  _ProfileState({required this.user});
+class _NewProfileState extends State<NewProfile> {
+  _NewProfileState({required this.user});
   Map<String, dynamic> user;
 
   @override
@@ -21,82 +21,33 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
         appBar:
             AppBar(backgroundColor: const Color.fromARGB(255, 47, 108, 128)),
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              constraints: const BoxConstraints(
-                  minHeight: 500, minWidth: 250, maxHeight: 700, maxWidth: 500),
-              decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage('pfp.png')),
-                color: Color.fromRGBO(232, 239, 231, 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child: Column(
-                children: [
-                  const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  'John Doe',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontFamily: 'Inter',
-                                  ),
-                                ),
-                                Text('12-05-2022',
-                                    style: TextStyle(
-                                        fontSize: 18, fontFamily: 'Inter')),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('he/him',
-                                  style: TextStyle(
-                                      fontSize: 18, fontFamily: 'Inter')),
-                              Text('Chennai, Tamil Nadu',
-                                  style: TextStyle(
-                                      fontSize: 18, fontFamily: 'Inter')),
-                            ],
-                          )
-                        ],
-                      )),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-                      child: Text(
-                        "About",
-                        style: TextStyle(
-                            fontSize: 36,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ),
-                  const Divider(),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "This will just be some text about the person, we have to figure out what kinds of restrictions we’ll place on this or if we will place anything at all",
-                      style: TextStyle(fontSize: 18, fontFamily: 'Inter'),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        )),
+        body: Stack(children: [
+          const Image(image: AssetImage(r'assets/pfp.png')),
+          ConstrainedBox(
+              constraints: BoxConstraints.expand(),
+              child: Container(
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.topCenter,
+                  // transform: GradientRotation(-3.14 / 2),
+                  colors: [
+                    Color.fromRGBO(232, 239, 231, 1),
+                    Color.fromRGBO(232, 239, 231, 0)
+                  ],
+                )),
+              )),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 300,
+                height: 50,
+                child: Text("manage profile"),
+              )
+            ],
+          )
+        ]),
         backgroundColor: const Color.fromARGB(255, 47, 108, 128));
   }
 }
