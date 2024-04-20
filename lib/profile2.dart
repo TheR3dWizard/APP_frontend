@@ -1,8 +1,5 @@
 // ignore_for_file: no_logic_in_create_state
 
-import 'dart:convert';
-import 'package:flutter/widgets.dart';
-
 import 'utilities.dart';
 import 'package:flutter/material.dart';
 
@@ -20,66 +17,83 @@ class _NewProfileState extends State<NewProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // appBar: AppBar(backgroundColor: const Color.fromRGBO(232, 239, 231, 1)),
-        body: Stack(children: [
-          const Image(image: AssetImage(r'assets/pfp.png')),
-          ConstrainedBox(
-              constraints: BoxConstraints.expand(),
-              child: Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.center,
-                  end: Alignment.topCenter,
-                  // transform: GradientRotation(-3.14 / 2),
-                  colors: [
-                    Color.fromRGBO(232, 239, 231, 1),
-                    Color.fromRGBO(232, 239, 231, 0)
-                  ],
-                )),
-              )),
-          const SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(padding: const EdgeInsets.only(top: 20.0)),
-                ManageProfile(),
-                Padding(padding: const EdgeInsets.only(top: 100.0)),
-                AccInfo()
-              ],
-            ),
-          )
-        ]),
-        backgroundColor: const Color.fromARGB(255, 47, 108, 128));
+    return FutureBuilder<Map<dynamic, dynamic>>(
+        future: loadAccount(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data!.isNotEmpty) {
+            return Scaffold(
+              body: Stack(children: [
+                Image(image: AssetImage(snapshot.data!['profilePicture'])),
+                ConstrainedBox(
+                  constraints: const BoxConstraints.expand(),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.center,
+                        end: Alignment.topCenter,
+                        // transform: GradientRotation(-3.14 / 2),
+                        colors: [
+                          Color.fromRGBO(232, 239, 231, 1),
+                          Color.fromRGBO(232, 239, 231, 0)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 20.0)),
+                      const ManageProfile(),
+                      const Padding(padding: EdgeInsets.only(top: 100.0)),
+                      AccInfo(info: snapshot.data!),
+                    ],
+                  ),
+                ),
+              ]),
+              backgroundColor: const Color.fromARGB(255, 47, 108, 128),
+            );
+          } else {
+            return const Center(
+                child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator()));
+          }
+        });
   }
 }
 
 class AccInfo extends StatelessWidget {
-  const AccInfo({super.key});
+  const AccInfo({super.key, this.info = const {}});
+
+  final Map<dynamic, dynamic> info;
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         Text(
-          "Dhakkshin S R",
-          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+          info['name'],
+          style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
         ),
-        Padding(padding: EdgeInsets.only(top: 10.0)),
+        const Padding(padding: EdgeInsets.only(top: 10.0)),
         Text(
-          "Coimbatore, Tamil Nadu",
-          style: TextStyle(fontSize: 16),
-        ),
-        Text(
-          "Narcotics Control Bureau",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          info['location'],
+          style: const TextStyle(fontSize: 16),
         ),
         Text(
-          "13-05-1977",
-          style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+          info['tag'] ?? "No Tag",
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        Padding(padding: EdgeInsets.only(top: 64.0)),
-        Row(
+        Text(
+          info['dateOfBirth'],
+          style: const TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 64.0)),
+        const Row(
           children: [
             Padding(
               padding: EdgeInsets.only(left: 16.0),
@@ -90,20 +104,20 @@ class AccInfo extends StatelessWidget {
             ),
           ],
         ),
-        Padding(
+        const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Divider(
             color: Colors.black,
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            "This will just be some text about the person, we have to figure out what kinds of restrictions we’ll place on this or if we will place anything at all",
-            style: TextStyle(fontSize: 18),
+            info['profileDescription'],
+            style: const TextStyle(fontSize: 18),
           ),
         ),
-        History()
+        const History()
       ],
     );
   }

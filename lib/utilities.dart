@@ -1,9 +1,11 @@
 // ignore_for_file: must_be_immutable, avoid_print, no_logic_in_create_state
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class LabelledTextField extends StatelessWidget {
   final String label;
@@ -363,4 +365,43 @@ Future<String> loadCustomer() async {
 
 String font() {
   return 'Poppins';
+}
+
+// local file functions
+
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
+}
+
+Future<File> get _localAccFile async {
+  final path = await _localPath;
+
+  File file = File('$path/account.json');
+  if (!file.existsSync()) {
+    await file.create(exclusive: false);
+    String jsonString = await rootBundle.loadString('assets/account.json');
+    await file.writeAsString(jsonString);
+  }
+
+  return file;
+}
+
+Future<Map> loadAccount() async {
+  final File file = await _localAccFile;
+  final String response = await file.readAsString();
+  return json.decode(response);
+}
+
+void writeJsonToAccFile(Map<String, dynamic> data) async {
+  final file = await _localAccFile;
+
+  // Convert the data to a JSON string
+  String jsonString = json.encode(data);
+
+  // Write the JSON string to the file
+  await file.writeAsString(jsonString);
+
+  //print("File Data: ${await file.readAsString()}");
 }
