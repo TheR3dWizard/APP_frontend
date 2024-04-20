@@ -267,6 +267,89 @@ class _PostState extends State<Post> {
   }
 }
 
+class History extends StatefulWidget {
+  const History({super.key});
+
+  @override
+  _HistoryState createState() => _HistoryState();
+}
+
+class _HistoryState extends State<History> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        constraints: const BoxConstraints(
+            minHeight: 100, minWidth: 250, maxHeight: 700, maxWidth: 500),
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(232, 239, 231, 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Posts",
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                ),
+                VerticalDivider(
+                  color: Colors.black,
+                  thickness: 1,
+                ),
+                Text(
+                  "Comments",
+                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                )
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Divider(color: Colors.black),
+            ),
+            PostSmall()
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PostSmall extends StatelessWidget {
+  const PostSmall(
+      {super.key,
+      this.title = "Bad Road Conditions",
+      this.description =
+          "we will limit the post here to only the first 200 or so characters and put these 4 dots, like reddit...."});
+
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+          Text(description, style: TextStyle(fontSize: 16)),
+          const Divider(color: Colors.black),
+        ],
+      ),
+    );
+  }
+}
+
 // Custom Functions
 
 //Function to load bet objects from json

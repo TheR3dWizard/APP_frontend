@@ -1,7 +1,9 @@
 // ignore_for_file: no_logic_in_create_state
 
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 
+import 'utilities.dart';
 import 'package:flutter/material.dart';
 
 class NewProfile extends StatefulWidget {
@@ -19,8 +21,7 @@ class _NewProfileState extends State<NewProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(backgroundColor: const Color.fromARGB(255, 47, 108, 128)),
+        // appBar: AppBar(backgroundColor: const Color.fromRGBO(232, 239, 231, 1)),
         body: Stack(children: [
           const Image(image: AssetImage(r'assets/pfp.png')),
           ConstrainedBox(
@@ -37,17 +38,98 @@ class _NewProfileState extends State<NewProfile> {
                   ],
                 )),
               )),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 300,
-                height: 50,
-                child: Text("manage profile"),
-              )
-            ],
+          const SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(padding: const EdgeInsets.only(top: 20.0)),
+                ManageProfile(),
+                Padding(padding: const EdgeInsets.only(top: 100.0)),
+                AccInfo()
+              ],
+            ),
           )
         ]),
         backgroundColor: const Color.fromARGB(255, 47, 108, 128));
+  }
+}
+
+class AccInfo extends StatelessWidget {
+  const AccInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        Text(
+          "Dhakkshin S R",
+          style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+        ),
+        Padding(padding: EdgeInsets.only(top: 10.0)),
+        Text(
+          "Coimbatore, Tamil Nadu",
+          style: TextStyle(fontSize: 16),
+        ),
+        Text(
+          "Narcotics Control Bureau",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          "13-05-1977",
+          style: TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+        ),
+        Padding(padding: EdgeInsets.only(top: 64.0)),
+        Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 16.0),
+              child: Text(
+                "About",
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Divider(
+            color: Colors.black,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "This will just be some text about the person, we have to figure out what kinds of restrictions we’ll place on this or if we will place anything at all",
+            style: TextStyle(fontSize: 18),
+          ),
+        ),
+        History()
+      ],
+    );
+  }
+}
+
+class ManageProfile extends StatelessWidget {
+  const ManageProfile({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          decoration: const BoxDecoration(
+              color: Color.fromRGBO(232, 239, 231, 1),
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: const SizedBox(
+            width: 125,
+            height: 25,
+            child: Center(child: Text("manage profile")),
+          ),
+        ),
+      ),
+    );
   }
 }

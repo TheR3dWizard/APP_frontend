@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'feed.dart';
+import 'utilities.dart';
 
 class Profile extends StatefulWidget {
   final Map<String, dynamic> user;
@@ -129,49 +130,5 @@ class _ProfileState extends State<Profile> {
           ],
         )),
         backgroundColor: const Color.fromARGB(255, 47, 108, 128));
-  }
-}
-
-class History extends StatefulWidget {
-  const History({super.key});
-
-  @override
-  _HistoryState createState() => _HistoryState();
-}
-
-class _HistoryState extends State<History> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        constraints: const BoxConstraints(
-            minHeight: 100, minWidth: 250, maxHeight: 700, maxWidth: 500),
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(232, 239, 231, 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Posts",
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
-                ),
-                Divider(),
-                Text(
-                  "Comments",
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
-                )
-              ],
-            ),
-            Divider(),
-          ],
-        ),
-      ),
-    );
   }
 }
