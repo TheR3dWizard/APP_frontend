@@ -1,6 +1,7 @@
 // ignore_for_file: no_logic_in_create_state
 
 import 'package:flutter/material.dart';
+import 'profile.dart';
 
 class Feed extends StatefulWidget {
   final Map<String, dynamic> feedData;
@@ -17,8 +18,23 @@ class _FeedState extends State<Feed> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar:
-            AppBar(backgroundColor: const Color.fromARGB(255, 47, 108, 128)),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 47, 108, 128),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.switch_account),
+              tooltip: 'Show Snackbar',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Profile(user: {}),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
         backgroundColor: const Color.fromARGB(255, 47, 108, 128),
         body: ListView.builder(
             itemCount: 10,
