@@ -117,7 +117,7 @@ class AccInfo extends StatelessWidget {
             style: const TextStyle(fontSize: 18),
           ),
         ),
-        const History()
+        History(data: info)
       ],
     );
   }
@@ -135,14 +135,108 @@ class ManageProfile extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Container(
           decoration: const BoxDecoration(
-              color: Color.fromRGBO(232, 239, 231, 1),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
+              color: Color.fromRGBO(181, 181, 181, 1),
+              borderRadius: BorderRadius.all(Radius.circular(8))),
           child: const SizedBox(
-            width: 125,
+            width: 115,
             height: 25,
             child: Center(child: Text("manage profile")),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class History extends StatefulWidget {
+  final Map<dynamic, dynamic> data;
+  const History({super.key, required this.data});
+
+  @override
+  _HistoryState createState() => _HistoryState(data: data);
+}
+
+class _HistoryState extends State<History> {
+  _HistoryState({required this.data});
+
+  Map<dynamic, dynamic> data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        constraints: const BoxConstraints(
+            minHeight: 100, minWidth: 250, maxHeight: 700, maxWidth: 500),
+        decoration: const BoxDecoration(
+          color: Color.fromRGBO(232, 239, 231, 1.0),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Posts",
+                    style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  ),
+                  VerticalDivider(
+                    color: Colors.black,
+                    thickness: 1,
+                  ),
+                  Text(
+                    "Comments",
+                    style: TextStyle(fontFamily: 'Inter', fontSize: 18),
+                  )
+                ],
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Divider(color: Colors.black),
+              ),
+              Column(
+                children: List<Widget>.generate(10, (int index) {
+                  return const PostSmall();
+                }),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PostSmall extends StatelessWidget {
+  const PostSmall(
+      {super.key,
+      this.title = "Bad Road Conditions",
+      this.description =
+          "we will limit the post here to only the first 200 or so characters and put these 4 dots, like reddit...."});
+
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+          Text(description, style: const TextStyle(fontSize: 16)),
+          const Divider(color: Colors.black),
+        ],
       ),
     );
   }
