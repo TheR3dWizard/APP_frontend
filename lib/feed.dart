@@ -1,14 +1,12 @@
 // ignore_for_file: no_logic_in_create_state
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'profile.dart';
-import 'profile2.dart';
 import 'utilities.dart';
 import 'postPage.dart';
 
 class Feed extends StatefulWidget {
   final Map<String, dynamic> feedData;
-  const Feed({super.key, required this.feedData});
+  const Feed({super.key, this.feedData = const {}});
 
   @override
   State<Feed> createState() => _FeedState(feedData: feedData);
@@ -31,7 +29,7 @@ class _FeedState extends State<Feed> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const NewProfile(user: {}),
+                    builder: (context) => const Profile(user: {}),
                   ),
                 );
               },
@@ -125,8 +123,7 @@ class _PostState extends State<Post> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    DateFormat('dd-MM-yyyy')
-                        .format(DateTime.parse(postData['postDate'])),
+                    formatDate(postData['postDate']),
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         color: Color.fromRGBO(78, 101, 108, 1.0),

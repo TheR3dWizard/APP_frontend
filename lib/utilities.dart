@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable, avoid_print, no_logic_in_create_state
+import 'package:intl/intl.dart';
 
 import 'dart:convert';
 import 'dart:io';
@@ -12,6 +13,8 @@ class LabelledTextField extends StatelessWidget {
   final String label;
   TextEditingController? controller;
   bool? enabled;
+  bool? hidden;
+
   //final Function(String) subFunction;
   LabelledTextField({
     super.key,
@@ -31,22 +34,35 @@ class LabelledTextField extends StatelessWidget {
     required this.enabled,
   });
 
+  LabelledTextField.hidden({
+    super.key,
+    required this.label,
+    this.hidden = true,
+    required this.controller,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15),
-      child: TextField(
-        decoration: InputDecoration(
-          constraints: const BoxConstraints(maxWidth: 450),
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            gapPadding: 5.0,
+      padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
+      child: SizedBox(
+        width: 300,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 20),
+          child: TextField(
+            obscureText: hidden ?? false,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                gapPadding: 5.0,
+              ),
+              labelText: label,
+            ),
+            controller: controller,
+            enabled: enabled,
+            //onSubmitted: subFunction,
           ),
-          labelText: label,
         ),
-        controller: controller,
-        enabled: enabled,
-        //onSubmitted: subFunction,
       ),
     );
   }
@@ -175,57 +191,6 @@ class _PillState extends State<Pill> {
   }
 }
 
-class History extends StatefulWidget {
-  const History({super.key});
-
-  @override
-  _HistoryState createState() => _HistoryState();
-}
-
-class _HistoryState extends State<History> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        constraints: const BoxConstraints(
-            minHeight: 100, minWidth: 250, maxHeight: 700, maxWidth: 500),
-        decoration: const BoxDecoration(
-          color: Color.fromRGBO(232, 239, 231, 1.0),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-        ),
-        child: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Posts",
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
-                ),
-                VerticalDivider(
-                  color: Colors.black,
-                  thickness: 1,
-                ),
-                Text(
-                  "Comments",
-                  style: TextStyle(fontFamily: 'Inter', fontSize: 18),
-                )
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Divider(color: Colors.black),
-            ),
-            PostSmall()
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class PostSmall extends StatelessWidget {
   const PostSmall(
       {super.key,
@@ -271,6 +236,34 @@ Future<List<dynamic>> loadFeed() async {
   return res.data;
 }
 
+void createProfile(
+    String name,
+    DateTime dob,
+    String aadhar,
+    String phoneNumber,
+    String userName,
+    String password,
+    File profilePic,
+    String profileDesc) async {
+  final dio = Dio();
+  final formData = FormData.fromMap({
+    'name': name,
+    'dob': dob,
+    'aadharNumber': aadhar,
+    'phoneNumber': phoneNumber,
+    'userName': userName,
+    'password': password,
+    'profileDescription': profileDesc,
+    'profilePic': await MultipartFile.fromFile(profilePic.path,
+        filename: profilePic.path.split('/').last),
+  });
+  await dio.post(
+      'https://activity-point-program-backend.onrender.com/api/profiles/',
+      data: formData, onSendProgress: (int sent, int total) {
+    print('$sent $total');
+  });
+}
+
 Future<Map<dynamic, dynamic>> loadPost(String id) async {
   final dio = Dio();
   final res = await dio.get(
@@ -281,6 +274,12 @@ Future<Map<dynamic, dynamic>> loadPost(String id) async {
 
 String font() {
   return 'Poppins';
+}
+
+//Date formmatter
+
+String formatDate(String date) {
+  return DateFormat('dd-MM-yyyy').format(DateTime.parse(date));
 }
 
 // local file functions

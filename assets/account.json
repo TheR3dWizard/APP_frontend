@@ -1,6 +1,6 @@
 {
     "name": "Dhakkshin S R",
-    "dateOfBirth": "12-05-1997",
+    "dateOfBirth": "1997-05-12",
     "aadharNumber": 123456789012,
     "phoneNumber": 9876543210,
     "userName": "DhakkBoi",
@@ -12,7 +12,6 @@
     "profileDescription":"This will just be some text about the person, we have to figure out what kinds of restrictions we’ll place on this or if we will place anything at all",
     "noOfPosts": 10,
     "postsOrComments": ["60f723ac11f0a700156d54bd", "60f723ac11f0a700156d54be"],
-    "blockedUsers": ["60f723ac11f0a700156d54bf", "60f723ac11f0a700156d54c0"],
-    "profilePic": "Base64_encoded_image_data_here",
-    "profilePicType": "jpg"
+    "blockedUsers": ["60f723ac11f0a700156d54bf", "60f723ac11f0a700156d54c0"]
 }
+

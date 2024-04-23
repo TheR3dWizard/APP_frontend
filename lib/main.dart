@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'feed.dart';
+import 'landingPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 47, 108, 128)),
         useMaterial3: true,
       ),
-      home: const Feed(feedData: {}),
+      home: LoginPage(),
     );
   }
 }
