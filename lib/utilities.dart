@@ -231,8 +231,8 @@ Future<List<dynamic>> loadFeed() async {
   final dio = Dio();
   final res = await dio
       .get('https://activity-point-program-backend.onrender.com/api/posts');
-  print("Response: ${res.data}");
-  print("ResponseType: ${res.data.runtimeType}");
+  // print("Response: ${res.data}");
+  // print("ResponseType: ${res.data.runtimeType}");
   return res.data;
 }
 
@@ -243,25 +243,30 @@ void createProfile(
     String phoneNumber,
     String userName,
     String password,
+    String tag,
     File profilePic,
     String profileDesc) async {
   final dio = Dio();
   final formData = FormData.fromMap({
     'name': name,
-    'dob': dob,
+    'dob': dob.millisecondsSinceEpoch.toString(),
     'aadharNumber': aadhar,
     'phoneNumber': phoneNumber,
     'userName': userName,
     'password': password,
+    'joinedOn': DateTime.now().millisecondsSinceEpoch.toString(),
+    'tag': tag,
     'profileDescription': profileDesc,
-    'profilePic': await MultipartFile.fromFile(profilePic.path,
+    'profilePicture': await MultipartFile.fromFile(profilePic.path,
         filename: profilePic.path.split('/').last),
   });
   await dio.post(
-      'https://activity-point-program-backend.onrender.com/api/profiles/',
-      data: formData, onSendProgress: (int sent, int total) {
-    print('$sent $total');
-  });
+    'https://activity-point-program-backend.onrender.com/api/profile/',
+    data: formData,
+    onSendProgress: (int sent, int total) {
+      print('$sent $total');
+    },
+  );
 }
 
 Future<Map<dynamic, dynamic>> loadPost(String id) async {
